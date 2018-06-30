@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {instanceOf} from 'prop-types';
 //since we want to navigate to another controller
 //after the person has logged in, we are going to use
 //withrouter
@@ -6,10 +7,18 @@ import {withRouter} from 'react-router-dom';
 import {API_URL} from '../Config';
 //import the handleresponse helper
 import {handleResponse} from '../Helper';
+//cookies
+import {withCookies, Cookies} from 'react-cookie';
 
 class Login extends Component {
-    constructor() {
-        super();
+    static propTypes = {
+        cookies: instanceOf(Cookies)
+    };
+
+    constructor(props) {
+        super(props);
+
+        const {cookies} = props;
 
         this.state = {
             email: "",
@@ -37,6 +46,8 @@ class Login extends Component {
         event.preventDefault();
 
         const {email, password} = this.state;
+        const {cookies} = this.props;
+
         console.log(email);
         if(email.length < 1 || password.length < 1) {
             return '';
@@ -59,6 +70,12 @@ class Login extends Component {
         //now handle the response
         .then(handleResponse)
         .then((result) => {
+            //success
+            //the object sent back has the token
+            //but since JWT isn't doing it for me
+            //right now we are just gonna lock the 
+            //email as a cookie
+            cookies.set('email', email, {path: '/'} );
             console.log(result);
         })
         .catch((error) => {
@@ -88,11 +105,11 @@ class Login extends Component {
                     name='password'
                     value={password}
                     onChange={this.handlePasswordChange}/>
-                    <button type='submit'>Login</button>
+                    <button className='btn-primary' type='submit'>Login</button>
                 </form>
             </div>
         );
     }
 }
 
-export default Login;
+export default withCookies(Login);
