@@ -51,19 +51,19 @@ class Finances extends Component {
         //when I have error handling
         if(error) {
             return (
-                <div class="error">{error}</div>
+                <div className="error">{error}</div>
             );
         }
 
         return(
-            <div class='container'>
+            <div className='container'>
                 <h2>{balance}</h2>
                 <button 
-                class='btn-success'
+                className='btn-success'
                 onClick={() => this.incrementBalance(100)}
                 >$100</button>
                 <button
-                class='btn-danger'
+                className='btn-danger'
                 onClick={() => this.decrementBalance(100)}>$100</button>
             </div>
         );

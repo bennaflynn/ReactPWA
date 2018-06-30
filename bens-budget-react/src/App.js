@@ -4,11 +4,13 @@ import './App.css';
 
 //load components
 import Finances from './components/Finances';
+import Login from './components/Login';
 
 class App extends Component {
   render() {
     return (
       <div className="container">
+        <Login />
         <Finances />
       </div>
     );

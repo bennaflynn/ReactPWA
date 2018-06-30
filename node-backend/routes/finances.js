@@ -24,7 +24,8 @@ router.post('/balance', (req, res) => {
 
         Finance.find({'email': req.body.email}, (err, fins) => {
             if(err) throw err;
-
+            //return all the inflows and outflows associated with
+            //the account. As in the Email
             return res.json(fins);
         })
     })
