@@ -1,11 +1,37 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/users');
-var Expense = require('../models/expenses');
+var Finance = require('../models/finances');
 
+//get the balanced
+router.post('/balance', (req, res) => {
+    if(!req.body.email) {
+        return res.json({
+            'success':false,
+            'message':'Error, are you logged in?'
+        });
+    }
+
+    User.findOne({email: req.body.email}, (err, user) => {
+        if(err) throw err;
+
+        if(!user) {
+            return res.json({
+                success: false,
+                message: 'User not found'
+            })
+        }
+
+        Finance.find({'email': req.body.email}, (err, fins) => {
+            if(err) throw err;
+
+            return res.json(fins);
+        })
+    })
+})
 
 //add a new expense
-router.post('/newexpense', (req, res) => {
+router.post('/newflow', (req, res) => {
     if(!req.body.amount) {
         return res.json({
             'success': false,
@@ -29,14 +55,14 @@ router.post('/newexpense', (req, res) => {
                 message: 'No user was found with this email'
             });
         } else {
-            var newExpense = new Expense({
+            var newFinance = new Finance({
                 email: req.body.email,
                 amount: req.body.amount,
                 name: req.body.name || "",
                 monthly: req.body.monthly || false
             });
 
-            Expense.newExpense(newExpense, (err, exp)=> {
+            Finance.newFinance(newFinance, (err, exp)=> {
                 if(err) {
                     return res.json({
                         success: false,
@@ -45,7 +71,7 @@ router.post('/newexpense', (req, res) => {
                 } else {
                     return res.json({
                         success: true,
-                        message: 'New expense added'
+                        message: 'New flow added'
                     })
                 }
             })
