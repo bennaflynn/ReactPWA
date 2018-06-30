@@ -18,7 +18,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
 
-        const {cookies} = props;
+        //add the with router props to props
+        const {cookies, history} = props;
 
         this.state = {
             email: "",
@@ -31,6 +32,16 @@ class Login extends Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
+    }
+
+    componentWillMount() {
+        const {cookies,history} = this.props;
+        
+        //if the cookie is already set, then they are
+        //already logged in
+        if(cookies.get('email')) {
+            history.push('/finances');
+        }
     }
 
     //deal with the changing of the email input
@@ -46,7 +57,7 @@ class Login extends Component {
         event.preventDefault();
 
         const {email, password} = this.state;
-        const {cookies} = this.props;
+        const {cookies, history} = this.props;
 
         console.log(email);
         if(email.length < 1 || password.length < 1) {
@@ -77,6 +88,9 @@ class Login extends Component {
             //email as a cookie
             cookies.set('email', email, {path: '/'} );
             console.log(result);
+
+            //now bounce to our main finances page
+            history.push('/finances');
         })
         .catch((error) => {
             console.log(error);
@@ -87,6 +101,7 @@ class Login extends Component {
 
     render() {
         const {email, password, loading, success} = this.state;
+        const {cookies} = this.props;
 
         return (
             <div className='container'>
@@ -112,4 +127,4 @@ class Login extends Component {
     }
 }
 
-export default withCookies(Login);
+export default withRouter(withCookies(Login));

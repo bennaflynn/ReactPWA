@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
 
+//functional imports
+import {withRouter} from 'react-router-dom';
+import {withCookies, Cookies} from 'react-cookie';
+
 //this component manages the incomes and 
 //the expenses of the person
 
 class Finances extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        const {cookies, history} = props;
 
         this.state = {
             //money going out
@@ -19,6 +25,15 @@ class Finances extends Component {
         };
     }
     
+    componentWillMount() {
+        const {cookies, history} = this.props;
+
+        //if the email cookie doesn't exist then 
+        //bounce back to the log in page
+        if(!cookies.get('email')) {
+            history.push('/');
+        }
+    }
 
     //when the component is mounted
     componentDidMount() {
@@ -72,4 +87,4 @@ class Finances extends Component {
     }
 }
 
-export default Finances;
+export default withRouter(withCookies(Finances));
