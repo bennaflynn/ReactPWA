@@ -4,6 +4,9 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {withCookies, Cookies} from 'react-cookie';
 
+import {API_URL} from '../Config';
+import {handleResponse} from '../Helper';
+
 //this component manages the incomes and 
 //the expenses of the person
 
@@ -38,15 +41,43 @@ class Finances extends Component {
     //when the component is mounted
     componentDidMount() {
         const {expenses, incomes, balance} = this.state;
+        const {cookies} = this.props;
 
-        /*
-        expenses.forEach((exp) => {
-            balance -= exp;
+        //get the balances
+        fetch(`${API_URL}/finances/balance`,
+        {method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            email: cookies.get('email') || ""
         })
-        incomes.forEach((inc) => {
-            balance += inc;
         })
-        */
+        .then(handleResponse)
+        .then((result) => {
+            //now loop through our object and
+            //add the results to the state
+            var exp = expenses;
+            var inc = incomes;
+            var bal = balance;
+            result.forEach(function(element) {
+                 
+                if(element.amount < 0) {
+                    exp.push(element.amount);
+                } else {
+                    inc.push(element.amount);
+                }
+                bal += element.amount;
+            }, this);
+            this.setState({expenses: exp, incomes:inc, balance: bal});
+            
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        
+        
     }
 
     incrementBalance(value) {
