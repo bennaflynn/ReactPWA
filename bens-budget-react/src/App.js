@@ -9,12 +9,14 @@ import {CookiesProvider} from 'react-cookie';
 //load components
 import Finances from './components/Finances';
 import Login from './components/Login';
+import Header from './components/Header';
 
 class App extends Component {
   render() {
     return (
         <BrowserRouter>
           <div className="container">
+            <Header />
             <Switch>
               <Route 
               path="/"

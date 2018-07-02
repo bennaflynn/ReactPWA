@@ -84,21 +84,13 @@ class Finances extends Component {
         
     }
 
-    incrementBalance(value) {
+    
+    changeBalance(value) {
         var bal = this.state.balance;
         var temp = this.state.tempVal;
         bal += value;
         temp += value;
         this.setState({balance: bal, tempVal: temp});
-        this.waitThenAdd();
-    }
-    decrementBalance(value) {
-        var bal = this.state.balance;
-        var temp = this.state.tempVal;
-        bal -= value;
-        temp -= value;
-        this.setState({balance: bal, tempVal:temp});
-        console.log(this.state.tempVal);
         this.waitThenAdd();
     }
 
@@ -164,15 +156,52 @@ class Finances extends Component {
         }
 
         return(
-            <div className='container'>
-                <h2>{balance}</h2>
-                <button 
-                className='btn-success'
-                onClick={() => this.incrementBalance(100)}
-                >$100</button>
-                <button
-                className='btn-danger'
-                onClick={() => this.decrementBalance(100)}>$100</button>
+            <div className="container">
+                <div className='row'>
+                    <div className="col-12">
+                        <h2>{balance}</h2>
+                    </div>
+                </div>
+                <div className="row">
+                    
+                    <button 
+                        className='btn-success'
+                        onClick={() => this.changeBalance(100)}
+                        >$100</button>
+                    
+                    <button
+                        className='btn-danger'
+                        onClick={() => this.changeBalance(-100)}>$100</button>
+                    
+                </div>
+                <div className="row">
+                    
+                    <button 
+                        className='btn-success'
+                        onClick={() => this.changeBalance(10)}
+                        >$10</button>
+                   
+                    <button 
+                        className='btn-danger'
+                        onClick={() => this.changeBalance(-10)}
+                        >$10</button>
+                    
+                </div>
+                <div className="row">
+                    
+                    <button 
+                        className='btn-success'
+                        onClick={() => this.changeBalance(1)}
+                        >$1</button>
+                   
+                    <button 
+                        className='btn-danger'
+                        onClick={() => this.changeBalance(-1)}
+                        >$1</button>
+                    
+                </div>
+                
+                
             </div>
         );
 
