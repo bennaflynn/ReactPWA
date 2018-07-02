@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
+//functional imports
+import {withRouter} from 'react-router-dom';
+import {withCookies, Cookies} from 'react-cookie';
+
 //import styles
 import './header.css';
 
 
 class Header extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        const {cookies, history} = props;
 
         this.state = {
             links: [
@@ -15,11 +21,6 @@ class Header extends Component {
                     id: 0,
                     path: "/finances",
                     name: "Home"
-                },
-                {
-                    id: 1,
-                    path: "/",
-                    name: "Logout" 
                 }
             ],
             showLinks: false
@@ -38,10 +39,18 @@ class Header extends Component {
                 {links.map(result => (
                     <div
                     key={result.id}
+                    className='links'
                     >
-                        <Link to={result.path}> {result.name} </Link>
+                        <Link to={result.path}
+                        onClick={() => this.setState({showLinks:false})}> {result.name} </Link>
                     </div>
                 ))}
+                <div className="links">
+                    <button 
+                    className="btn-danger"
+                    onClick={() => this.logout()}
+                    >Logout</button>
+                </div>
             </div>
         );
 
@@ -54,6 +63,14 @@ class Header extends Component {
         } else {
             this.setState({showLinks: true})
         }
+    }
+
+    logout() {
+        this.setState({showLinks: false});
+        //drop the cookie verifiying the person
+        this.props.cookies.remove('email');
+        //now navigate to the login page
+        this.props.history.push('/');
     }
 
     render() {
@@ -73,4 +90,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default withRouter(withCookies(Header));

@@ -104,17 +104,17 @@ class Login extends Component {
         const {cookies} = this.props;
 
         return (
-            <div className='container'>
+            <div className='form-group'>
                 <form onSubmit={this.handleSubmit}>
                     <input
-                    className='login-input'
+                    className='form-control'
                     type='text'
                     placeholder='Email'
                     name='email'
                     value={email}
                     onChange={this.handleEmailChange}/>
                     <input
-                    className='login-input'
+                    className='form-control'
                     type='password'
                     placeholder='Password'
                     name='password'
