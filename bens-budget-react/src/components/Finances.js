@@ -23,6 +23,10 @@ class Finances extends Component {
             incomes: [],
             //the difference
             balance: 0,
+            //temporary value
+            tempVal: 0,
+            //timer boolean 
+            timerBegan: false,
             //error handling,
             error: null
         };
@@ -82,14 +86,72 @@ class Finances extends Component {
 
     incrementBalance(value) {
         var bal = this.state.balance;
+        var temp = this.state.tempVal;
         bal += value;
-        this.setState({balance: bal});
+        temp += value;
+        this.setState({balance: bal, tempVal: temp});
+        this.waitThenAdd();
     }
     decrementBalance(value) {
         var bal = this.state.balance;
+        var temp = this.state.tempVal;
         bal -= value;
-        this.setState({balance: bal});
+        temp -= value;
+        this.setState({balance: bal, tempVal:temp});
+        console.log(this.state.tempVal);
+        this.waitThenAdd();
     }
+
+    //this gets called only if the timer has
+    //not been called yet. It waits 5 seconds,
+    //hopefully enough to add a new one time
+    //income/expense and then adds it to the 
+    //database
+    waitThenAdd() {
+        const {cookies} = this.props;
+
+        if(this.state.timerBegan) {
+            return '';
+        }
+        //timer is now started
+        this.setState({timerBegan: true});
+
+        setTimeout(()=> {
+            console.log(this.state.tempVal);
+
+            //call the api
+            fetch(`${API_URL}/finances/newflow`,
+            {method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                email: cookies.get('email') || '',
+                amount: this.state.tempVal,
+                name: '',
+                monthly: false
+            })
+            })
+            .then(handleResponse)
+            .then((result) => {
+                if(result.success) {
+                    alert('Successfully added');
+                } else {
+                    alert('Not added');
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+            //add the value to the database
+            this.setState({timerBegan: false, tempVal: 0})
+            
+        },5000)
+    }
+    
 
     render() {
         const {expenses, incomes, balance, error} = this.state;
