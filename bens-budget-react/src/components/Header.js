@@ -21,10 +21,17 @@ class Header extends Component {
                     id: 0,
                     path: "/finances",
                     name: "Home"
+                },
+                {
+                    id:1,
+                    path: "/newflow",
+                    name: "New Flow"
                 }
             ],
             showLinks: false
         }
+
+        
     }
 
     renderLinks() {

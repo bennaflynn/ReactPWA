@@ -10,6 +10,7 @@ import {CookiesProvider} from 'react-cookie';
 import Finances from './components/Finances';
 import Login from './components/Login';
 import Header from './components/Header';
+import NewFlow from './components/NewFlow';
 
 class App extends Component {
   render() {
@@ -27,6 +28,10 @@ class App extends Component {
               path="/finances"
               component={Finances}
               exact/>
+              <Route 
+              path="/newflow"
+              component={NewFlow}
+              exact />
               <Route
               //the default route
               component={Login}
