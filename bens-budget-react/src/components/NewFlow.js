@@ -120,7 +120,7 @@ class NewFlow extends Component {
                     type='number'
                     min='1'
                     placeholder='Amount'
-                    value={amount}
+                    
                     onChange={this.handleAmountChange}/>
                     
                     <div className="radio">

@@ -13,6 +13,9 @@ var FinanceSchema = mongoose.Schema({
     },
     monthly: {
         type: Boolean
+    },
+    dateAdded: {
+        type: Date
     }
 
 })

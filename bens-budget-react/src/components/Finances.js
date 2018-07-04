@@ -28,7 +28,10 @@ class Finances extends Component {
             //timer boolean 
             timerBegan: false,
             //error handling,
-            error: null
+            error: null,
+            //the actual objects, so that they can 
+            //be passed to other components
+            dataObjects: []
         };
     }
     
@@ -40,11 +43,13 @@ class Finances extends Component {
         if(!cookies.get('email')) {
             history.push('/');
         }
+
+        console.log(new Date().getTime());
     }
 
     //when the component is mounted
     componentDidMount() {
-        const {expenses, incomes, balance} = this.state;
+        const {expenses, incomes, balance, dataObjects} = this.state;
         const {cookies} = this.props;
 
         //get the balances
@@ -74,7 +79,8 @@ class Finances extends Component {
                 }
                 bal += element.amount;
             }, this);
-            this.setState({expenses: exp, incomes:inc, balance: bal});
+            //console.log(result);
+            this.setState({expenses: exp, incomes:inc, balance: bal, dataObjects: result});
             
         })
         .catch((error) => {

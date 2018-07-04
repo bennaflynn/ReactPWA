@@ -6,6 +6,7 @@ var session = require('express-session');
 var passport = require('passport');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var schedule = require('node-schedule');
 
 //local strategy
 var LocalStrategy = require('passport-local').Strategy;
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
         'hello': 'is it me you are looking for'
     })
 })
+
 
 //import JWT
 var jwt = require('jsonwebtoken');
@@ -60,10 +62,21 @@ app.use(function(req, res, next) {
 app.use('/users', users);
 app.use('/finances', finances);
 
+//define the scheduled delete of the database
+var rule = new schedule.RecurrenceRule();
+rule.second = 30;
+
+var job = schedule.scheduleJob(rule, () => {
+    console.log('Every 30 minutes');
+})
+
+
 app.listen(port, (err, res) => {
     if(err) {
         console.log(err);
     } else {
         console.log('Server started and listening on port ' + port);
     }
+
+    
 } )

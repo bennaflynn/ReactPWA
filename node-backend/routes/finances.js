@@ -60,8 +60,11 @@ router.post('/newflow', (req, res) => {
                 email: req.body.email,
                 amount: req.body.amount,
                 name: req.body.name || "",
-                monthly: req.body.monthly || false
+                monthly: req.body.monthly || false,
+                dateAdded: new Date()
             });
+
+            console.log(newFinance.dateAdded);
 
             Finance.newFinance(newFinance, (err, exp)=> {
                 if(err) {
