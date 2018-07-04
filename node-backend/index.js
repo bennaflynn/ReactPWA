@@ -1,3 +1,8 @@
+//front end is hosted on firebase and can be found on
+//https://bensbudgeter.firebaseapp.com
+//backend is hosted on heroku and can be found on
+//https://bens-budgeting-backend.herokuapp.com
+
 var express = require('express');
 var Config = require('./config');
 var port = process.env.PORT || Config.port;
