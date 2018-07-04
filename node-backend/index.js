@@ -7,6 +7,7 @@ var passport = require('passport');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var schedule = require('node-schedule');
+var onceMonthDelete = require('./helpers/onceMonthDelete');
 
 //local strategy
 var LocalStrategy = require('passport-local').Strategy;
@@ -64,10 +65,20 @@ app.use('/finances', finances);
 
 //define the scheduled delete of the database
 var rule = new schedule.RecurrenceRule();
-rule.second = 30;
+//do this on the first of each month
+rule.date = 1;
 
 var job = schedule.scheduleJob(rule, () => {
-    console.log('Every 30 minutes');
+   //this deletes all the incomes/expenses that 
+   //are not monthly. It does this because or else
+   //the database would be full of trivial expenses 
+   //and would be a burden to access. Due to the 
+   //nature of the app, you only want consistent
+   //across months are those incomes/expenses that
+   //are actually monthly. The database doesn't 
+   //need to know you bought a pornhub subscription
+   //(a one off purchase) last april
+    onceMonthDelete.deleteOnceMonth();
 })
 
 

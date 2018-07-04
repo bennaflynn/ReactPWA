@@ -30,5 +30,9 @@ module.exports.deleteFinance = (params, callback) => {
     Finance.remove(params, callback);
 }
 
+module.exports.deleteMonthly = (params, callback) => {
+    Finance.deleteMany(params, callback);
+}
+
 
 

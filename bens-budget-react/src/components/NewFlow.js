@@ -119,8 +119,7 @@ class NewFlow extends Component {
                     className='form-control'
                     type='number'
                     min='1'
-                    placeholder='Amount'
-                    
+                    placeholder='Amount'                   
                     onChange={this.handleAmountChange}/>
                     
                     <div className="radio">

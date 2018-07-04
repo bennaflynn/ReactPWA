@@ -64,7 +64,7 @@ router.post('/newflow', (req, res) => {
                 dateAdded: new Date()
             });
 
-            console.log(newFinance.dateAdded);
+            //console.log(newFinance.dateAdded);
 
             Finance.newFinance(newFinance, (err, exp)=> {
                 if(err) {
