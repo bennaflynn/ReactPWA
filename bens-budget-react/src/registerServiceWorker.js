@@ -8,6 +8,9 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
+//console.log('Register service worker');
+
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -19,7 +22,9 @@ const isLocalhost = Boolean(
 );
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  //console.log('Registering');
+  if (process.env.NODE_ENV === 'production' &&  'serviceWorker' in navigator) {
+    console.log('Is available');
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
@@ -29,8 +34,15 @@ export default function register() {
       return;
     }
 
+    window.addEventListener('fetch', function(event) {
+      
+      console.log(event.request.url);
+      
+      });
+
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      console.log(swUrl);
 
       if (isLocalhost) {
         // This is running on localhost. Lets check if a service worker still exists or not.
@@ -107,6 +119,8 @@ function checkValidServiceWorker(swUrl) {
       );
     });
 }
+
+
 
 export function unregister() {
   if ('serviceWorker' in navigator) {

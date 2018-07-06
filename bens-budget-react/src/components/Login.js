@@ -10,6 +10,8 @@ import {handleResponse} from '../Helper';
 //cookies
 import {withCookies, Cookies} from 'react-cookie';
 
+import './Login.css';
+
 class Login extends Component {
     static propTypes = {
         cookies: instanceOf(Cookies)
@@ -120,7 +122,7 @@ class Login extends Component {
                     name='password'
                     value={password}
                     onChange={this.handlePasswordChange}/>
-                    <button className='btn-primary' type='submit'>Login</button>
+                    <button className='btn-login' type='submit'>Login</button>
                 </form>
             </div>
         );

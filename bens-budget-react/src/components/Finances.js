@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
 
+//styles
+import './Finances.css';
+
 //functional imports
 import {withRouter} from 'react-router-dom';
 import {withCookies, Cookies} from 'react-cookie';
 
 import {API_URL} from '../Config';
 import {handleResponse} from '../Helper';
+
+//import the bootstrap components
+import {Button, Grid, Row, Col} from 'react-bootstrap';
 
 //this component manages the incomes and 
 //the expenses of the person
@@ -162,53 +168,59 @@ class Finances extends Component {
         }
 
         return(
-            <div className="container">
-                <div className='row'>
-                    <div className="col-12">
-                        <h2>{balance}</h2>
-                    </div>
-                </div>
-                <div className="row">
-                    
+            <Grid >
+                <Row className='show-grid'>
+                    <Col xl={12} className="balance">
+                        <p>{balance}</p>
+                    </Col>
+                </Row>
+                <Row className="show-grid mid-row">
+                    <Col xs={12}></Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={6}>
                     <button 
                         className='btn-success'
                         onClick={() => this.changeBalance(100)}
                         >$100</button>
-                    
+                    </Col>
+                    <Col xs={6}>
                     <button
                         className='btn-danger'
                         onClick={() => this.changeBalance(-100)}>$100</button>
-                    
-                </div>
-                <div className="row">
-                    
+                   </Col>                  
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={6}>
                     <button 
                         className='btn-success'
                         onClick={() => this.changeBalance(10)}
                         >$10</button>
-                   
+                    </Col>
+                    <Col xs={6}>
                     <button 
                         className='btn-danger'
                         onClick={() => this.changeBalance(-10)}
                         >$10</button>
-                    
-                </div>
-                <div className="row">
-                    
+                    </Col>
+                </Row>
+                <Row className="show-grid">
+                    <Col xs={6}>
                     <button 
                         className='btn-success'
                         onClick={() => this.changeBalance(1)}
                         >$1</button>
-                   
+                    </Col>
+                    <Col xs={6}>
                     <button 
                         className='btn-danger'
                         onClick={() => this.changeBalance(-1)}
                         >$1</button>
-                    
-                </div>
+                    </Col>
+                </Row>
                 
                 
-            </div>
+            </Grid>
         );
 
 

@@ -16,8 +16,10 @@ class App extends Component {
   render() {
     return (
         <BrowserRouter>
+          <div className='wrapper'>
+          <Header />
           <div className="container">
-            <Header />
+            
             <Switch>
               <Route 
               path="/"
@@ -37,6 +39,10 @@ class App extends Component {
               component={Login}
               />
             </Switch>           
+          </div>
+          <div className='footer'>
+            <p>Made With &lt;3 By Ben</p>
+          </div>
           </div>
         </BrowserRouter>
     );

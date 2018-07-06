@@ -6,6 +6,8 @@ import {withRouter} from 'react-router-dom';
 import {Cookies, withCookies} from 'react-cookie';
 import {handleResponse} from '../Helper';
 
+import './NewFlow.css';
+
 //this component allows the user to either enter
 //an inflow or an outflow of income. Here is where 
 //they can specify whether it is a monthly flow or
@@ -107,7 +109,7 @@ class NewFlow extends Component {
         var {name, amount, isIncome, isMonthly, flowType, epoch} = this.state;
         
         return(
-            <div className='container'>
+            <div className=''>
                 <form className='form-group' onSubmit={this.handleSubmit}>
                     <input 
                     className='form-control'
