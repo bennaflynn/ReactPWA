@@ -1,8 +1,13 @@
 .form-group {
     margin-top:10%;
-    text-align: center;
+    text-align: left;
 }
 
 input, button {
     margin-top:5%
+}
+button {
+    background-color: #181B1B;
+    border: #181B1B;
+    color: #FAFEFF;
 }

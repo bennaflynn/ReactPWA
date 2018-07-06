@@ -110,6 +110,7 @@ class Header extends Component {
             customBurgerIcon={<img src='./hamburger.png'/>}
             customCrossIcon={ <img src='./x.png' />}
             width={'75%'}
+            isOpen={showLinks}
             >              
                 {links.map(result => (
                     <div
@@ -117,11 +118,14 @@ class Header extends Component {
                     className=''
                     >
                         <Link to={result.path}
-                        onClick={() => this.setState({showLinks:false})}> {result.name} </Link>
+                        onClick={() => this.setState({
+                            showLinks:false
+                            })}> {result.name} </Link>
                     </div>
                 ))}
 
-                <a style={{cursor: 'pointer'}} onClick={() => this.logout()}>Logout</a>             
+                <a style={{cursor: 'pointer'}} 
+                onClick={() => this.logout()}>Logout</a>             
             </Menu>
             </div>
         );
