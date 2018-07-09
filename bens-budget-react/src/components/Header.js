@@ -79,9 +79,12 @@ class Header extends Component {
     logout() {
         this.setState({showLinks: false});
         //drop the cookie verifiying the person
-        this.props.cookies.remove('email');
+        this.props.cookies.remove('token');
         //now navigate to the login page
         this.props.history.push('/');
+        //reload the page to get rid of the cookie
+        window.location.reload();
+        
     }
 
     render() {
