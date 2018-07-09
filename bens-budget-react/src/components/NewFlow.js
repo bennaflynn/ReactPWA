@@ -38,8 +38,9 @@ class NewFlow extends Component {
 
     componentWillMount() {
         const {history, cookies} = this.props;
-        checkCookie()
-
+        if(!cookies.get('token')) {
+            history.push('/');
+        }
         
     }
 
@@ -80,7 +81,8 @@ class NewFlow extends Component {
         {method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization': 'jwt ' + cookies.get('token')
         },
         body: JSON.stringify({
             email: email,

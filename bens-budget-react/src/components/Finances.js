@@ -41,28 +41,34 @@ class Finances extends Component {
     }
     
     componentWillMount() {
-        this.checkCookie;
-        console.log(new Date().getTime());
+        const {history, cookies} = this.props;
+
+        if(!cookies.get('token')) {
+            history.push('/');
+        }
     }
 
     //when the component is mounted
     componentDidMount() {
         const {expenses, incomes, balance, dataObjects} = this.state;
-        const {cookies} = this.props;
+        const {cookies, history} = this.props;
 
         //get the balances
         fetch(`${API_URL}/finances/balance`,
-        {method: 'POST',
+        {method: 'GET',
         headers: {
             'Accept': 'application/json',
-            'Content-Type':'application/json'
-        },
-        body: JSON.stringify({
-            email: cookies.get('email') || ""
-        })
+            'Content-Type':'application/json',
+            //get the token from the cookies
+            'Authorization': 'jwt ' + cookies.get('token')
+        }
         })
         .then(handleResponse)
         .then((result) => {
+            if(result.success === false) {
+                history.push('/');
+            }
+
             //now loop through our object and
             //add the results to the state
             var exp = expenses;
@@ -83,6 +89,8 @@ class Finances extends Component {
         })
         .catch((error) => {
             console.log(error);
+            //no headers were added so push back home
+            history.push('/');
         })
         
         

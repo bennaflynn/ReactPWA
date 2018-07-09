@@ -41,9 +41,9 @@ class Login extends Component {
         
         //if the cookie is already set, then they are
         //already logged in
-        if(cookies.get('email')) {
-            history.push('/finances');
-        }
+        // if(cookies.get('email')) {
+        //     history.push('/finances');
+        // }
     }
 
     //deal with the changing of the email input
@@ -88,8 +88,8 @@ class Login extends Component {
             //but since JWT isn't doing it for me
             //right now we are just gonna lock the 
             //email as a cookie
-            cookies.set('email', email, {path: '/'} );
-            console.log(result);
+            console.log(result.token);
+            cookies.set('token', result.token, {path: '/'} );
 
             //now bounce to our main finances page
             history.push('/finances');
