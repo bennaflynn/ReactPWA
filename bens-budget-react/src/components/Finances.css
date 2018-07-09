@@ -2,10 +2,15 @@
   background-color: #708283;
 }
 .balance {
-  color: #181B1B;
   text-align: center;
   font-weight: bold;
   font-size: 45px;
+}
+.positive {
+  color:#181b1b;
+}
+.negative {
+  color: #ac2925;
 }
 .show-grid {
   text-align: center;

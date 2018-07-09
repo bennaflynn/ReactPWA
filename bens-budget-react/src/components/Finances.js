@@ -6,10 +6,9 @@ import './Finances.css';
 //functional imports
 import {withRouter} from 'react-router-dom';
 import {withCookies, Cookies} from 'react-cookie';
-
 import {API_URL} from '../Config';
 import {handleResponse} from '../Helper';
-
+import {checkCookie} from '../CheckCookie';
 //import the bootstrap components
 import {Button, Grid, Row, Col} from 'react-bootstrap';
 
@@ -42,14 +41,7 @@ class Finances extends Component {
     }
     
     componentWillMount() {
-        const {cookies, history} = this.props;
-
-        //if the email cookie doesn't exist then 
-        //bounce back to the log in page
-        if(!cookies.get('email')) {
-            history.push('/');
-        }
-
+        this.checkCookie;
         console.log(new Date().getTime());
     }
 
@@ -171,7 +163,7 @@ class Finances extends Component {
             <Grid >
                 <Row className='show-grid'>
                     <Col xl={12} className="balance">
-                        <p>{balance}</p>
+                        <p className={balance > 0 ? 'positive' : 'negative'}>${Math.abs(balance)}</p>
                     </Col>
                 </Row>
                 <Row className="show-grid mid-row">

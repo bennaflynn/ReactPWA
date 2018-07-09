@@ -2,17 +2,18 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/users');
 var Finance = require('../models/finances');
+var passport = require('passport');
+var jwt = require('jsonwebtoken');
 
 //get the balanced
-router.post('/balance', (req, res) => {
-    if(!req.body.email) {
-        return res.json({
-            'success':false,
-            'message':'Error, are you logged in?'
-        });
-    }
+router.get('/balance', passport.authenticate('jwt',{session:false}), (req, res) => {
 
-    User.findOne({email: req.body.email}, (err, user) => {
+    //get the email from the JWT token
+    var newAuth = req.headers.authorization.replace('jwt ','');
+    var decoded = jwt.verify(newAuth, process.env.SECRET_OR_KEY);
+    
+
+    User.findOne({email: decoded.data.email}, (err, user) => {
         if(err) throw err;
 
         if(!user) {
@@ -22,7 +23,7 @@ router.post('/balance', (req, res) => {
             })
         }
 
-        Finance.find({'email': req.body.email}, (err, fins) => {
+        Finance.find({'email': decoded.data.email}, (err, fins) => {
             if(err) throw err;
             //return all the inflows and outflows associated with
             //the account. As in the Email
@@ -32,23 +33,20 @@ router.post('/balance', (req, res) => {
 })
 
 //add a new expense
-router.post('/newflow', (req, res) => {
+router.post('/newflow', passport.authenticate('jwt', {session: false}), (req, res) => {
     if(!req.body.amount) {
         return res.json({
             'success': false,
             'message':'Must have an expense value'
         })
     }
-    //check if there is an email attached
-    if(!req.body.email) {
-        //get out of here the person isn't logged in
-        return res.json({
-            'success':false,
-            'message':'Error, are you logged in?'
-        });
-    }
+    
+    //get the email from the JWT token
+    var newAuth = req.headers.authorization.replace('jwt ','');
+    var decoded = jwt.verify(newAuth, process.env.SECRET_OR_KEY);
+
     //now does this user exist in the database?
-    User.findOne({email: req.body.email}, (err, user) => {
+    User.findOne({email: decoded.data.email}, (err, user) => {
         if(err) throw err;
         if(!user) {
             res.send({
@@ -57,7 +55,7 @@ router.post('/newflow', (req, res) => {
             });
         } else {
             var newFinance = new Finance({
-                email: req.body.email,
+                email: decoded.data.email,
                 amount: req.body.amount,
                 name: req.body.name || "",
                 monthly: req.body.monthly || false,

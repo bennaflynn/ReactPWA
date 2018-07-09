@@ -38,11 +38,6 @@ class Header extends Component {
         
     }
 
-    showSettings(event) {
-        event.preventDefault();
-        console.log('Opened');
-    }
-
     renderLinks() {
         const {showLinks, links} = this.state;
         if(!showLinks) {
@@ -108,7 +103,7 @@ class Header extends Component {
             <Menu 
             noOverlay
             customBurgerIcon={<img src='./hamburger.png'/>}
-            customCrossIcon={ <img src='./x.png' />}
+            customCrossIcon={ <img src='./X.png' />}
             width={'75%'}
             isOpen={showLinks}
             >              

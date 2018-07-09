@@ -5,6 +5,7 @@ import {API_URL} from '../Config';
 import {withRouter} from 'react-router-dom';
 import {Cookies, withCookies} from 'react-cookie';
 import {handleResponse} from '../Helper';
+import {checkCookie} from '../CheckCookie';
 
 import './NewFlow.css';
 
@@ -36,13 +37,10 @@ class NewFlow extends Component {
     }
 
     componentWillMount() {
-        const {cookies, history} = this.props;
+        const {history, cookies} = this.props;
+        checkCookie()
 
-        //if the email cookie doesn't exist then 
-        //bounce back to the log in page
-        if(!cookies.get('email')) {
-            history.push('/');
-        }
+        
     }
 
     handleNameChange(event) {

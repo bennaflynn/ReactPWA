@@ -10,7 +10,7 @@ router.post('/newuser', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
 
-
+    console.log(req.body.email);
     if(!req.body.email || !req.body.password) {
         res.json({
             success: false,
@@ -32,10 +32,11 @@ router.post('/newuser', (req, res) => {
                 message: 'Error creating user'
             })
         }
-        var token = jwt.sign({data: newUser}, Config.secret, {expiresIn: 3600})
+        var token = jwt.sign({data: newUser}, process.env.SECRET_OR_KEY, {expiresIn: 3600})
         res.json({
             success: true,
-            message: 'New account has been created'
+            message: 'New account has been created',
+            token: token
         })
     })
     }
@@ -45,7 +46,7 @@ router.post('/newuser', (req, res) => {
 router.post('/login', (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if(err) throw err;
-
+        console.log(req.body.email);
         if(!user) {
             res.send({
                 success: false,
@@ -54,7 +55,7 @@ router.post('/login', (req, res) => {
         } else {
             User.comparePassword(req.body.password, user.password, (err, isMatch) => {
                 if(isMatch && !err) {
-                    var token = jwt.sign({data:user},Config.secret, {expiresIn: 3600});
+                    var token = jwt.sign({data:user},process.env.SECRET_OR_KEY, {expiresIn: 3600});
                     res.json({success:true, token: token});
                     //res.cookie('auth', token);
                 } else {

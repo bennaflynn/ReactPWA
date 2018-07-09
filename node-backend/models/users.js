@@ -27,7 +27,7 @@ module.exports.createUser = (newUser, callback) => {
 
 module.exports.comparePassword = (newPass, hash, callback) => {
     bcrypt.compare(newPass, hash, (err, isMatch) => {
-        if(err) throw err;
+        //if(err) throw err;
         callback(null, isMatch);
     })
 }

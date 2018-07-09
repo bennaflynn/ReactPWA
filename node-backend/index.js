@@ -3,23 +3,25 @@
 //backend is hosted on heroku and can be found on
 //https://bens-budgeting-backend.herokuapp.com
 
+//load this intially
+const dotenv = require('dotenv');
+dotenv.config();
 var express = require('express');
 var Config = require('./config');
 var port = process.env.PORT || Config.port;
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
+var passportJWT = require('passport-jwt');
+var JwtStrategy = passportJWT.Strategy;
+var ExtractJwt = passportJWT.ExtractJwt;
+//import JWT
+var jwt = require('jsonwebtoken');
+
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var schedule = require('node-schedule');
 var onceMonthDelete = require('./helpers/onceMonthDelete');
-
-//local strategy
-var LocalStrategy = require('passport-local').Strategy;
-
-//declare url endpoints 
-var users = require('./routes/users');
-var finances = require('./routes/finances');
 
 var app = express();
 
@@ -27,6 +29,38 @@ var app = express();
 var mongoose = require('mongoose');
 mongoose.connect(Config.db);
 var db = mongoose.connection;
+
+var User = require('./models/users');
+
+const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+    secretOrKey: process.env.SECRET_OR_KEY
+}
+
+//whenever I get a jwt token, this is what to do with it
+const strategy = new JwtStrategy(options, (payload, done) => {
+    //get user from DB
+    //console.log(payload.data.email);
+    User.findOne({email: payload.data.email}, (err, newuser) => {
+        console.log('Pass: ' + payload.data.password);
+        if(newuser) {
+             return done(null, newuser);
+        } else {
+            return done(null, false);
+        }
+       
+    })
+    
+})
+
+passport.use(strategy);
+app.use(passport.initialize());
+
+//declare url endpoints 
+var users = require('./routes/users');
+var finances = require('./routes/finances');
+
+
 
 //body parsing
 app.use(bodyParser.json());
@@ -40,22 +74,23 @@ app.get('/', (req, res) => {
 })
 
 
-//import JWT
-var jwt = require('jsonwebtoken');
+app.get('/protected', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.send('Released');
+});
 
-// express session
+
+
+
+// express session secrets
 app.use(session({
     secret: 'soopercrazysesions',
     saveUnititialized: true,
     resave: true
 }));
 
-//intialize passport
-app.use(passport.initialize());
 app.use(passport.session());
 
-//use the passport strategy defined
-require('./passport')(passport);
+
 
 //allow cors
 app.use(function(req, res, next) {
