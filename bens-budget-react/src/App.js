@@ -11,9 +11,10 @@ import Finances from './components/Finances';
 import Login from './components/Login';
 import Header from './components/Header';
 import NewFlow from './components/NewFlow';
+import List from './components/List';
 
 class App extends Component {
-  
+
   render() {
     return (
         <BrowserRouter>
@@ -34,6 +35,10 @@ class App extends Component {
               <Route 
               path="/newflow"
               component={NewFlow}
+              exact />
+              <Route 
+              path="/all"
+              component={List}
               exact />
               <Route
               //the default route
