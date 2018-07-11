@@ -95,7 +95,6 @@ class List extends Component {
 
         return(
             <div>
-            <p>{fixedExpenses[0].dateAdded}</p>
             <Table striped className='finances-table'>
                 <thead>
                     <tr>
@@ -109,17 +108,102 @@ class List extends Component {
                         <th>Amount</th>
                     </tr>
                 </thead>
+                <tbody>
                 {fixedExpenses.map(fexp => {
                     var d = new Date(fexp.dateAdded);
                     //gotta do plus one cause months are zero indexed
                     return(
-                    <tr>
+                    <tr
+                    key={fexp._id}>
                         <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
                         <td>{fexp.name}</td>
                         <td>{fexp.amount}</td>
                     </tr>
                     );
                 })}
+                </tbody>
+            </Table>
+            <Table striped className='finances-table'>
+                <thead>
+                    <tr>
+                        <th colSpan={3}>Variable Expenses</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Desc</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {expenses.map(exp => {
+                    var d = new Date(exp.dateAdded);
+                    //gotta do plus one cause months are zero indexed
+                    return(
+                    <tr key={exp._id}>
+                        <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
+                        <td>{exp.name}</td>
+                        <td>{exp.amount}</td>
+                    </tr>
+                    );
+                })}
+                </tbody>
+            </Table>
+            <Table striped className='finances-table'>
+                <thead>
+                    <tr>
+                        <th colSpan={3}>Fixed Incomes</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Desc</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {fixedIncomes.map(finc => {
+                    var d = new Date(finc.dateAdded);
+                    //gotta do plus one cause months are zero indexed
+                    return(
+                    <tr key={finc._id}>
+                        <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
+                        <td>{finc.name}</td>
+                        <td>{finc.amount}</td>
+                    </tr>
+                    );
+                })}
+                </tbody>
+            </Table>
+            
+            <Table striped className='finances-table'>
+                <thead>
+                    <tr>
+                        <th colSpan={3}>Variable Incomes</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Desc</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {incomes.map(inc => {
+                    var d = new Date(inc.dateAdded);
+                    //gotta do plus one cause months are zero indexed
+                    return(
+                    <tr key={inc._id}>
+                        <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
+                        <td>{inc.name}</td>
+                        <td>{inc.amount}</td>
+                    </tr>
+                    );
+                })}
+                </tbody>
             </Table>
             </div>
         );

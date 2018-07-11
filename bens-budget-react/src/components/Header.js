@@ -30,6 +30,11 @@ class Header extends Component {
                     id:1,
                     path: "/newflow",
                     name: "New Flow"
+                },
+                {
+                    id: 2,
+                    path: "/all",
+                    name: "All Flows"
                 }
             ],
             showLinks: false

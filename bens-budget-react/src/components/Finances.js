@@ -59,7 +59,6 @@ class Finances extends Component {
         headers: {
             'Accept': 'application/json',
             'Content-Type':'application/json',
-            //get the token from the cookies
             'Authorization': 'jwt ' + cookies.get('token')
         }
         })
