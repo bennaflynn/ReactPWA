@@ -9,6 +9,8 @@ import {API_URL} from '../Config';
 import {handleResponse} from '../Helper';
 //cookies
 import {withCookies, Cookies} from 'react-cookie';
+//loading
+import Loading from './Loading';
 
 import './Login.css';
 
@@ -27,7 +29,8 @@ class Login extends Component {
             email: "",
             password: "",
             loading: false,
-            success: false
+            success: false,
+            error: ""
         }
         //bind so they can use the 'this' keyword
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -58,15 +61,17 @@ class Login extends Component {
         //stop the redirect
         event.preventDefault();
 
-        const {email, password} = this.state;
+        var {email, password, loading, error} = this.state;
         const {cookies, history} = this.props;
+
+
 
         console.log(email);
         if(email.length < 1 || password.length < 1) {
             return '';
         }
         //set loading to true
-        //this.setState({loading: true});
+        this.setState({loading: true, error: ""});
 
         //now call our api to login
         fetch(`${API_URL}/users/login`,
@@ -89,10 +94,17 @@ class Login extends Component {
             //right now we are just gonna lock the 
             //email as a cookie
             console.log(result.token);
+            this.setState({loading: false});
             cookies.set('token', result.token, {path: '/'} );
 
-            //now bounce to our main finances page
-            history.push('/finances');
+            if(result.token != null) {
+                //now bounce to our main finances page
+                history.push('/finances');
+            } else {
+                this.setState({password: '', email: '', error: "Incorrect account information"});
+                history.push('/');
+            }
+            
         })
         .catch((error) => {
             console.log(error);
@@ -102,10 +114,18 @@ class Login extends Component {
     }
 
     render() {
-        const {email, password, loading, success} = this.state;
+        const {email, password, loading, success,error} = this.state;
         const {cookies} = this.props;
 
+        // if(loading) {
+        //     return <Loading/>;
+        // }
+
         return (
+            <div>
+                {loading && 
+                    <Loading/>
+                }
             <div className='form-group'>
                 <form onSubmit={this.handleSubmit}>
                     <input
@@ -124,6 +144,8 @@ class Login extends Component {
                     onChange={this.handlePasswordChange}/>
                     <button className='btn-login' type='submit'>Login</button>
                 </form>
+            </div>
+                <div className='error-container'>{error}</div>
             </div>
         );
     }

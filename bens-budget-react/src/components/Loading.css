@@ -1,0 +1,21 @@
+.loading-container {
+    position:absolute;
+
+}
+
+.error-container {
+    text-align: center;
+    color: #ac2925;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.loading {
+    animation: App-logo-spin infinite 1s linear;
+    height: 80px;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
