@@ -84,6 +84,34 @@ class List extends Component {
         console.log(this.state);
     }
 
+    deleteFlow(flowId) {
+        console.log(flowId);
+        const {cookies} = this.props;
+        fetch(`${API_URL}/finances/delete`, 
+            {method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type':'application/json',
+                //get the token from the cookies
+                'Authorization': 'jwt ' + cookies.get('token')
+            },
+            body: JSON.stringify({
+                id: flowId
+            })
+        })
+        .then(handleResponse)
+        .then((result) => {
+            if(result.success) {
+                alert('Successfully deleted!');
+            } else {
+                alert('Something went wrong deleting :/');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        }) 
+    }
+
     
     render() {
         const {fixedExpenses, fixedIncomes, expenses, incomes} = this.state;
@@ -94,11 +122,11 @@ class List extends Component {
         }
 
         return(
-            <div>
+            <div className='finances-container'>
             <Table striped className='finances-table'>
                 <thead>
                     <tr>
-                        <th colSpan={3}>Fixed Expenses</th>
+                        <th colSpan={4}>Fixed Expenses</th>
                     </tr>   
                 </thead>
                 <thead>
@@ -118,6 +146,7 @@ class List extends Component {
                         <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
                         <td>{fexp.name}</td>
                         <td>{fexp.amount}</td>
+                        <td><img className='garbage' src='./garbage.png' onClick={ () => this.deleteFlow(fexp._id)} /></td>
                     </tr>
                     );
                 })}
@@ -126,7 +155,7 @@ class List extends Component {
             <Table striped className='finances-table'>
                 <thead>
                     <tr>
-                        <th colSpan={3}>Variable Expenses</th>
+                        <th colSpan={4}>Variable Expenses</th>
                     </tr>
                 </thead>
                 <thead>
@@ -145,6 +174,7 @@ class List extends Component {
                         <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
                         <td>{exp.name}</td>
                         <td>{exp.amount}</td>
+                        <td><img className='garbage' src='./garbage.png' onClick={ () => this.deleteFlow(exp._id)} /></td>
                     </tr>
                     );
                 })}
@@ -153,7 +183,7 @@ class List extends Component {
             <Table striped className='finances-table'>
                 <thead>
                     <tr>
-                        <th colSpan={3}>Fixed Incomes</th>
+                        <th colSpan={4}>Fixed Incomes</th>
                     </tr>
                 </thead>
                 <thead>
@@ -172,6 +202,7 @@ class List extends Component {
                         <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
                         <td>{finc.name}</td>
                         <td>{finc.amount}</td>
+                        <td><img className='garbage' src='./garbage.png' onClick={ () => this.deleteFlow(finc._id)} /></td>
                     </tr>
                     );
                 })}
@@ -181,7 +212,7 @@ class List extends Component {
             <Table striped className='finances-table'>
                 <thead>
                     <tr>
-                        <th colSpan={3}>Variable Incomes</th>
+                        <th colSpan={4}>Variable Incomes</th>
                     </tr>
                 </thead>
                 <thead>
@@ -200,6 +231,7 @@ class List extends Component {
                         <td>{d.getDate() + '/' + (d.getMonth()+1)}</td>
                         <td>{inc.name}</td>
                         <td>{inc.amount}</td>
+                        <td><img className='garbage' src='./garbage.png' onClick={ () => this.deleteFlow(inc._id)} /></td>
                     </tr>
                     );
                 })}

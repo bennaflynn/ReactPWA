@@ -31,6 +31,29 @@ router.get('/balance', passport.authenticate('jwt',{session:false}), (req, res) 
         })
     })
 })
+//delete an expense
+router.post('/delete', passport.authenticate('jwt',{session:false}), (req, res) => {
+    if(!req.body.id) {
+        return res.json({
+            'success': false,
+            'message': 'No id passed'
+        })
+    }
+
+    Finance.deleteFinance({_id: req.body.id}, (err) => {
+        if(err) {
+            return res.json({
+                'success': false,
+                'message': 'Something happned on our end :/'
+            })
+        } else {
+            return res.json({
+                'success': true,
+                'message': 'Successful delete!'
+            })
+        }
+    })
+})
 
 //add a new expense
 router.post('/newflow', passport.authenticate('jwt', {session: false}), (req, res) => {

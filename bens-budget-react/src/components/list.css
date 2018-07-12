@@ -1,3 +1,12 @@
 .finances-table {
     width:100%;
 }
+
+.finances-container {
+    margin-bottom: 100px;
+}
+
+.garbage {
+    height: 20px;
+    cursor: pointer; 
+}

@@ -132,7 +132,8 @@ class Finances extends Component {
             {method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization': 'jwt ' + cookies.get('token')
             },
             body: JSON.stringify({
                 email: cookies.get('email') || '',
