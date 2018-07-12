@@ -3,6 +3,9 @@ import React, {Component} from 'react';
 //styles
 import './Finances.css';
 
+//components
+import Loading from './Loading';
+
 //functional imports
 import {withRouter} from 'react-router-dom';
 import {withCookies, Cookies} from 'react-cookie';
@@ -36,7 +39,8 @@ class Finances extends Component {
             error: null,
             //the actual objects, so that they can 
             //be passed to other components
-            dataObjects: []
+            dataObjects: [],
+            loading: false
         };
     }
     
@@ -50,9 +54,10 @@ class Finances extends Component {
 
     //when the component is mounted
     componentDidMount() {
-        const {expenses, incomes, balance, dataObjects} = this.state;
+        const {expenses, incomes, balance, dataObjects, loading} = this.state;
         const {cookies, history} = this.props;
 
+        this.setState({loading: true});
         //get the balances
         fetch(`${API_URL}/finances/balance`,
         {method: 'GET',
@@ -83,7 +88,7 @@ class Finances extends Component {
                 bal += element.amount;
             }, this);
             //console.log(result);
-            this.setState({expenses: exp, incomes:inc, balance: bal, dataObjects: result});
+            this.setState({expenses: exp, incomes:inc, balance: bal, dataObjects: result, loading: false});
             
         })
         .catch((error) => {
@@ -157,13 +162,17 @@ class Finances extends Component {
     
 
     render() {
-        const {expenses, incomes, balance, error} = this.state;
+        const {expenses, incomes, balance, error, loading} = this.state;
 
         //when I have error handling
         if(error) {
             return (
                 <div className="error">{error}</div>
             );
+        }
+
+        if(loading) {
+            return <Loading />;
         }
 
         return(
