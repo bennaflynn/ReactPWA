@@ -102,11 +102,9 @@ class Finances extends Component {
 
     
     changeBalance(value) {
-        var bal = this.state.balance;
         var temp = this.state.tempVal;
-        bal += value;
         temp += value;
-        this.setState({balance: bal, tempVal: temp});
+        this.setState({ tempVal: temp});
         this.waitThenAdd();
     }
 
@@ -154,16 +152,19 @@ class Finances extends Component {
             .catch((error) => {
                 console.log(error);
             })
-
+            var newBal = this.state.balance + this.state.tempVal;
             //add the value to the database
-            this.setState({timerBegan: false, tempVal: 0})
+            this.setState({timerBegan: false, tempVal: 0, balance: newBal})
             
         },5000)
     }
     
 
     render() {
-        const {expenses, incomes, balance, error, loading} = this.state;
+        const {expenses, incomes, balance, error, loading, tempVal} = this.state;
+
+        var displayTemp = false;
+        if(tempVal != 0) displayTemp = true;
 
         //when I have error handling
         if(error) {
@@ -184,7 +185,12 @@ class Finances extends Component {
                     </Col>
                 </Row>
                 <Row className="show-grid mid-row">
-                    <Col xs={12}></Col>
+                    <Col xs={12}>
+                    {displayTemp &&
+                    <p className={tempVal > 0 ? 'positive':'negative'}>{tempVal}</p>
+                    
+                    }
+                    </Col>
                 </Row>
                 <Row className="show-grid">
                     <Col xs={6}>
