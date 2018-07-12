@@ -10,25 +10,19 @@ html, body {
 .wrapper {
   height:100%;
 }
-.container {
-  margin-bottom: -50px;
-} 
-.container:after {
-  content: "";
-  display: block;
-  height:50px;
-} 
+
+
 .footer {
   background-color: #FAFEFF;
   color: #181B1B;
   text-align: center;
   line-height: 50px;
   font-size: 12px;
-  position: absolute;
-  bottom: 0;
+  position: fixed;
   height: 50px;
   width: 100%;
-  overflow: hidden;
+  overflow:hidden;
+  bottom: 0;
 }
 
 
