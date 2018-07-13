@@ -9,38 +9,71 @@ var passport = require('passport');
 router.post('/newuser', (req, res) => {
     var email = req.body.email;
     var password = req.body.password;
+    var password2 = req.body.password2;
 
-    console.log(req.body.email);
-    if(!req.body.email || !req.body.password) {
-        res.json({
+    //are the fields filled out
+    if(!email || !password || !password2) {
+        return res.json({
             success: false,
-            message: "Fill out all the feilds",
-            
-        });
-    } else {
-        var newUser = new User({
-            email: req.body.email,
-            password : req.body.password
+            message: 'Please fill out all the fields'
         })
-    
+    }
+    console.log('Fields filled out');
+    //do the passwords match?
+    if(password != password2) {
+        return res.json({
+            success: false,
+            message: 'Passwords do not match'
+        })        
+    }
+    console.log('Passwords match');
 
-    //create the new user
-    User.createUser(newUser, (err, user) => {
+    //check the database to see if the user with this
+    //username already exists
+    User.getUserByEmail(email, (err, u) => {
         if(err) {
-            return req.json({
+            return res.json({
                 success: false,
-                message: 'Error creating user'
+                message: 'Something went wrong validating the username'
             })
         }
-        var token = jwt.sign({data: newUser}, process.env.SECRET_OR_KEY, {expiresIn: 3600})
-        res.json({
-            success: true,
-            message: 'New account has been created',
-            token: token
-        })
-    })
+        console.log(u);
+        if(u != null) {
+            console.log(u);
+            return res.json({
+                success: false,
+                message: 'A user with this username has already been taken'
+            })
+        } else {
+            console.log('Is a unique username');
+
+             //create the user
+            var newUser = new User({
+                email: req.body.email,
+                password : req.body.password
+            })
+
+
+            //create the new user
+            User.createUser(newUser, (err, user) => {
+                if(err) {
+                    return res.json({
+                        success: false,
+                        message: 'Error creating user'
+                    })
+                }
+                var token = jwt.sign({data: newUser}, process.env.SECRET_OR_KEY, {expiresIn: 3600})
+                res.json({
+                    success: true,
+                    message: 'New account has been created',
+                    token: token
+                })
+            })
+        }
+        
+    })   
     }
-})
+)
 
 //login to your account
 router.post('/login', (req, res) => {
