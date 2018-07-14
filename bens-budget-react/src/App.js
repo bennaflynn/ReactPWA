@@ -12,6 +12,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import NewFlow from './components/NewFlow';
 import List from './components/List';
+import NewUser from './components/NewUser';
 
 class App extends Component {
 
@@ -26,6 +27,11 @@ class App extends Component {
               <Route 
               path="/"
               component={Login}
+              exact
+              />
+              <Route 
+              path="/newuser"
+              component={NewUser}
               exact
               />
               <Route 

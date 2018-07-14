@@ -18,7 +18,8 @@ router.post('/newuser', (req, res) => {
             message: 'Please fill out all the fields'
         })
     }
-    console.log('Fields filled out');
+    //console.log('Fields filled out');
+    
     //do the passwords match?
     if(password != password2) {
         return res.json({
@@ -26,7 +27,7 @@ router.post('/newuser', (req, res) => {
             message: 'Passwords do not match'
         })        
     }
-    console.log('Passwords match');
+    //console.log('Passwords match');
 
     //check the database to see if the user with this
     //username already exists
@@ -37,15 +38,15 @@ router.post('/newuser', (req, res) => {
                 message: 'Something went wrong validating the username'
             })
         }
-        console.log(u);
+        //console.log(u);
         if(u != null) {
-            console.log(u);
+            //console.log(u);
             return res.json({
                 success: false,
                 message: 'A user with this username has already been taken'
             })
         } else {
-            console.log('Is a unique username');
+            //console.log('Is a unique username');
 
              //create the user
             var newUser = new User({
@@ -79,7 +80,7 @@ router.post('/newuser', (req, res) => {
 router.post('/login', (req, res) => {
     User.findOne({email: req.body.email}, (err, user) => {
         if(err) throw err;
-        console.log(req.body.email);
+        //console.log(req.body.email);
         if(!user) {
             res.send({
                 success: false,
