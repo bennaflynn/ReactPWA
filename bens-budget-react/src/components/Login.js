@@ -3,7 +3,7 @@ import {instanceOf} from 'prop-types';
 //since we want to navigate to another controller
 //after the person has logged in, we are going to use
 //withrouter
-import {withRouter} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 import {API_URL} from '../Config';
 //import the handleresponse helper
 import {handleResponse} from '../Helper';
@@ -68,6 +68,7 @@ class Login extends Component {
 
         console.log(email);
         if(email.length < 1 || password.length < 1) {
+            this.setState({error: "Please fill out the fields"});
             return '';
         }
         //set loading to true
@@ -146,7 +147,16 @@ class Login extends Component {
                 </form>
             </div>
                 <div className='error-container'>{error}</div>
+                <div>
+                    <Link
+                    className='newUserLink'
+                    to="/newuser"
+                    exact>
+                    Create Account
+                    </Link>
+                </div>
             </div>
+            
         );
     }
 }
