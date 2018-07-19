@@ -151,7 +151,7 @@ class Login extends Component {
                     <Link
                     className='newUserLink'
                     to="/newuser"
-                    exact>
+                    >
                     Create Account
                     </Link>
                 </div>
