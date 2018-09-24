@@ -89,7 +89,7 @@ router.post('/login', (req, res) => {
         } else {
             User.comparePassword(req.body.password, user.password, (err, isMatch) => {
                 if(isMatch && !err) {
-                    var token = jwt.sign({data:user},process.env.SECRET_OR_KEY, {expiresIn: 3600});
+                    var token = jwt.sign({data:user},process.env.SECRET_OR_KEY);
                     res.json({success:true, token: token});
                     //res.cookie('auth', token);
                 } else {
